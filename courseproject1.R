@@ -55,4 +55,26 @@ plot(mm_df$date,mm_df$ms,type="l",xlab="Date",ylab=""
 lines(mm_df$date,mm_df$mes,col="red")
 legend("topleft",legend=c("Mean","Median"),col=c("black","red"),lty=1)
 
+## 4. Time series plot of the average number of steps taken
+### NaN did not appear as it was, so NaN was excluded
+
+act_df %>% group_by(date) %>% summarise(as=mean(steps,na.rm=TRUE)) %>%
+  mutate(as=if_else(is.nan(as),0,as)) -> avg_df
+
+left_join(act_df,avg_df,by="date") -> n4_df
+
+### plot
+
+par(mfrow=c(2,1))
+par(oma = c(0, 0, 3, 0))  
+plot(n4_df$datetime,n4_df$steps
+     ,col="red",type="l",main="Steps",ylab="",xlab="Date")
+plot(n4_df$datetime,n4_df$as
+     ,col="blue",type="h", main="Avg steps by each day",ylab="",xlab="Date")
+mtext(side=3,line=1,outer=T,text="Time series plot of the average number of steps taken")
+
+
+
+
+
 
